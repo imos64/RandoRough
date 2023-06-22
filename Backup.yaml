@@ -1,5 +1,5 @@
 apiVersion: mysql.radondb.com/v1alpha1
-kind: Backup
+kind: Backups
 metadata:
   name: backup-sample1
   namespcae: ahyeha-prod
