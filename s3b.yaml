@@ -1,0 +1,13 @@
+apiVersion: mysql.radondb.com/v1alpha1
+kind: Backup
+metadata:
+  name: backup-sample1
+  namespcae: ahyeha-prod
+spec:
+  # Add fields here
+  hostName: sample-mysql-0
+  clusterName: sample
+  replicas: 3
+  mysqlVersion: "5.7"
+  backupSchedule: "0 0 0 * * *"  # daily
+
