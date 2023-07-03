@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  # Corresponding to the user's secretName
+  name: sample-user-password
+  nameSpace: ahyeha-prod
+data:
+  # The key corresponding to the user's secretKey
+  # RadonDB@123
+  superUser: UmFkb25EQkAxMjM=
+  normalUser: UmFkb25EQkAxMjM=
+---
+apiVersion: mysql.radondb.com/v1alpha1
+kind: MysqlUser
+metadata:
+  name: super-user
+  nameSpace: ahyeha-prod
+spec:
+  ## MySQL user name.
+  user: super_user
+  withGrantOption: true
+  tlsOptions: 
+    type: NONE
+  hosts: 
+    - "%"
+  permissions:
+    - database: "*"
+      tables:
+        - "*"
+      privileges:
+        - ALL
+  ## Specify the cluster where the user is located.
+  userOwner:
+    clusterName: sample
+    nameSpace: ahyeha-prod
+  ## Specify the secret object for user.
+  secretSelector:
+    secretName: sample-user-password
+    secretKey: superUser
+---
+apiVersion: mysql.radondb.com/v1alpha1
+kind: MysqlUser
+metadata:
+  name: normal-user
+  nameSpace: ahyeha-prod
+spec:
+  ## MySQL user name.
+  user: normal_user
+  withGrantOption: false
+  tlsOptions: 
+    type: NONE
+  hosts: 
+    - "%"
+  permissions:
+    - database: "*"
+      tables:
+        - "*"
+      privileges:
+        - USAGE
+  ## Specify the cluster where the user is located.
+  userOwner:
+    clusterName: sample
+    nameSpace: ahyeha-prod
+  ## Specify the secret object for user.
+  secretSelector:
+    secretName: sample-user-password
+    secretKey: normalUser
